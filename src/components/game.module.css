@@ -39,8 +39,8 @@
 }
 
 .square {
-    width: 420px;
-    height: 420px;
+    width: 440px;
+    height: 440px;
     /* background-color: var(--secondary-dark-color); */
     border-radius: 10px;
     margin: 0.5rem;
@@ -65,6 +65,7 @@
     align-items: center;
 }
 
+
 .text_inboxes {
     display: flex;
     flex-direction: row;
@@ -80,18 +81,22 @@
     height: 30px;
     border-radius: 10px;
     border: none;
+    color: white;
     /* margin: 0.5rem; */
     /* border-color: var(--secondary-dark-color); */
-    font-size: 2rem;
+    font-size: 0.9rem;
     /* color: var(--main-lihgt-color); */
     text-align: center;
 }
 
 .game_buttons {
+    width: 140px;
+    /* margin-right: 5px; */
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    gap: 5px;
     /* margin-top: 40px; */
 }
 
