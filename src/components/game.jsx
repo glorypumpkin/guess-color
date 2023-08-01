@@ -23,13 +23,38 @@ function GenerateRandomColor() {
 // guessState: active, hidden, late
 function GuessWindow({ guessState, onGuessSubmitted }) {
 
-    const [r, setR] = useState(0);
-    const [g, setG] = useState(0);
-    const [b, setB] = useState(0);
+    const [r, setR] = useState('');
+    const [g, setG] = useState('');
+    const [b, setB] = useState('');
 
+    const r_int = parseInt(r);
+    const g_int = parseInt(g);
+    const b_int = parseInt(b);
 
+    const [shake, setShake] = useState(false);
+
+    function isGuessValid() {
+        if (isNaN(r_int) || isNaN(g_int) || isNaN(b_int)) {
+            return false;
+        }
+        if (r_int < 0 || r_int > 255) {
+            return false;
+        }
+        if (g_int < 0 || g_int > 255) {
+            return false;
+        }
+        if (b_int < 0 || b_int > 255) {
+            return false;
+        }
+        return true;
+    }
 
     function onSubmit() {
+        if (!isGuessValid()) {
+            setShake(true);
+            setTimeout(() => setShake(false), 300);
+            return;
+        }
         // get input values from text boxes
         const inputValues = {
             r: r,
@@ -47,20 +72,20 @@ function GuessWindow({ guessState, onGuessSubmitted }) {
                     (e) => {
                         setR(e.target.value);
                     }
-                } />
+                } value={r} />
                 <input className={`${style.text_input} ${style.green_input}`} type="text" onChange={
                     (e) => {
                         setG(e.target.value);
                     }
-                } />
+                } value={g} />
                 <input className={`${style.text_input} ${style.blue_input}`} type="text" onChange={
                     (e) => {
                         setB(e.target.value);
                     }
-                } />
+                } value={b} />
             </div>
             <div className={style.game_buttons}>
-                <button className={style.game_button}>Reset</button>
+                <button className={style.game_button} onClick={onResetClicked}>Reset</button>
                 <button className={style.game_button} onClick={onSubmit}>Submit</button>
             </div>
         </>
@@ -71,16 +96,23 @@ function GuessWindow({ guessState, onGuessSubmitted }) {
     const lateGuess = (
         <>
             <div className={style.text_inboxes}>
-                <input className={`${style.text_input} ${style.red_input}`} type="text" />
-                <input className={`${style.text_input} ${style.green_input}`} type="text" />
-                <input className={`${style.text_input} ${style.blue_input}`} type="text" />
+                <input className={`${style.text_input} ${style.red_input}`} disabled value={r} />
+                <input className={`${style.text_input} ${style.green_input}`} disabled value={g} />
+                <input className={`${style.text_input} ${style.blue_input}`} disabled value={b} />
             </div>
             <div className={style.game_buttons}> </div>
         </>
     )
 
+    function onResetClicked() {
+        setR('');
+        setG('');
+        setB('');
+
+    }
+
     return (
-        <div className={style.guess}>
+        <div className={`${style.guess} ${shake ? style.shake : null}`}>
             {guessState === 'active' && activeGuess}
             {guessState === 'hidden' && hiddenGuess}
             {guessState === 'late' && lateGuess}
